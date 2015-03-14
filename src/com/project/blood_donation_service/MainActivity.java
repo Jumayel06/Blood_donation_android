@@ -26,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -45,24 +46,30 @@ public class MainActivity extends Activity
 {
 	Button donor,sign,exit;
     boolean server_conn=false;
-    String url="192.168.46.1/proj/index_andro.php";
-	int timeout=30000;
+    String url="http://"+Server_Info.ip_add+"index_andro.php";
+	int timeout=10000;
 	
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.option);
+		
+		StrictMode.enableDefaults();
+		
 		donor=(Button)findViewById(R.id.donor);
 		sign=(Button)findViewById(R.id.sign);
 		exit=(Button)findViewById(R.id.exit);
 		
 		checkInternetConnection();
+		check_server_conn();
 		
 		donor.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v)
 			{
 				Intent i=new Intent(MainActivity.this,Donor.class);
 				startActivity(i);
+				//finish();
 			}
 		  });
 		
@@ -72,6 +79,7 @@ public class MainActivity extends Activity
 					{
 						Intent i=new Intent(MainActivity.this,Signing.class);
 						startActivity(i);
+						finish();
 					}
 				}
 			);
@@ -80,7 +88,9 @@ public class MainActivity extends Activity
 	       {
 				public void onClick(View arg0)
 				{
+					//onDestroy();
 					finish();
+					System.exit(0);
 				}
 			}
 		);
@@ -95,14 +105,14 @@ public class MainActivity extends Activity
 			
 			if(info!=null && info.isConnected())
 			{
-			 Toast.makeText(this,"Network is Connected",Toast.LENGTH_SHORT).show();		
+			 //Toast.makeText(this,"Network is Connected",Toast.LENGTH_SHORT).show();		
 			}
 	        else
 		    {
 	           Toast.makeText(this,"Network is not Connected",Toast.LENGTH_SHORT).show();
 		    }
 	}
-	public boolean check_server_conn(String url, int timeout)
+	public boolean check_server_conn()
 		{
 			try
 				{
@@ -110,11 +120,13 @@ public class MainActivity extends Activity
 				    HttpURLConnection connection = (HttpURLConnection) myUrl.openConnection();
 				    connection.setConnectTimeout(timeout);
 				    connection.connect();
+				    Toast.makeText(this,"Server is on...",Toast.LENGTH_SHORT).show();
 				    return true;
 				} 
 				catch (Exception e)
 				{
-				    return false;
+					Toast.makeText(this,"Sorry,Server is off...",Toast.LENGTH_LONG).show();
+					return false;
 				}
 		}
     public boolean onCreateOptionsMenu(Menu menu)
@@ -124,9 +136,5 @@ public class MainActivity extends Activity
 		return true;
 	}
 	
-	protected void onPause()
-	{
-		super.onPause();
-		finish();
-	}
+	
 }

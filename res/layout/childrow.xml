@@ -9,11 +9,10 @@
               android:layout_height="wrap_content"
               android:layout_width="wrap_content" 
               android:layout_gravity="left|center_vertical"
-                          android:textColor="#FFFFFF"
-              
               android:layout_marginLeft="15dp"
               android:fontFamily="sans-serif-medium" 
               
+              android:textColor="#DBDCE1"
               android:textSize="15sp"  />
       
           <TextView
@@ -21,8 +20,7 @@
               android:layout_height="wrap_content"
               android:layout_width="wrap_content"
               android:layout_marginLeft="15dp"
-                          android:textColor="#FFFFFF"
-              
+				android:textColor="#DBDCE1"              
               android:fontFamily="sans-serif-medium" 
               android:layout_gravity="left|center_vertical"
               android:textSize="15sp"/>
@@ -30,7 +28,7 @@
               android:id="@+id/text3"
               android:layout_height="wrap_content"
               android:layout_marginLeft="15dp"
-                          android:textColor="#FFFFFF"
+                          android:textColor="#DBDCE1"
               
               android:fontFamily="sans-serif-medium" 
               android:layout_width="wrap_content"

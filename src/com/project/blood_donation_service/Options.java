@@ -42,10 +42,23 @@ public class Options extends Activity
 				public void onClick(View arg0)
 				{
 					finish();
+					//onDestroy();
+					//quit();
+					System.exit(0);
 				}
 			}
 		);
 				
 	}
+	protected void quit()
+	{
+		//super.onDestroy();
+	}
+
+	/*@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}*/
 	
 }

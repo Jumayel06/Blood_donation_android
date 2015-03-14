@@ -90,10 +90,10 @@ public class Donating extends Activity implements OnFocusChangeListener
 		{
 			public void onFocusChange(View v, boolean hasFocus)
 			{
-				if(!hasFocus)
+				if(hasFocus)
 				{
-					new existing_donor_check().execute();
-					//Toast.makeText(getApplicationContext(),"It's working lemon",Toast.LENGTH_SHORT).show();
+					//new existing_donor_availablity();
+					date.setText("");
 				}
 			}
 		});
@@ -116,8 +116,15 @@ public class Donating extends Activity implements OnFocusChangeListener
 				
 				if(validation())
 				{
+				//new existing_donor_availablity().execute();	
 				 if(donor_ok==1)
-				 new existing_donor_availablity().execute();
+				 {
+					 new donating().execute();
+				 }
+				 else
+				 {
+					 Toast.makeText(getApplicationContext(),"SORRY,donation can't be processed.",Toast.LENGTH_LONG).show();
+				 }
 			    }
 				else
 				{
@@ -131,6 +138,7 @@ public class Donating extends Activity implements OnFocusChangeListener
 		String format="yyyy-MM-dd";
 		SimpleDateFormat sdf=new SimpleDateFormat(format);
 		date.setText(sdf.format(myCalendar.getTime()));
+		new existing_donor_availablity().execute();
 	}
 	public boolean validation()
     {
@@ -155,7 +163,8 @@ public class Donating extends Activity implements OnFocusChangeListener
 	{
 		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3)
 		{
-		   _bags=no_of_bags.getSelectedItem().toString(); 
+		   _bags=no_of_bags.getSelectedItem().toString();
+		   	
 		}
 		public void onNothingSelected(AdapterView<?> arg0)
 		{
@@ -166,15 +175,15 @@ public class Donating extends Activity implements OnFocusChangeListener
    	{
    		String res="";
    		InputStream is=null;
-   		//ProgressDialog pDialog;
+   		ProgressDialog pDialog;
    		
    		protected void onPreExecute()
    		{
    			super.onPreExecute();
-   			/*pDialog = new ProgressDialog(Donating.this);
-   			pDialog.setMessage("Checking existence of DONOR...");
+   			pDialog = new ProgressDialog(Donating.this);
+   			pDialog.setMessage("ELIGIBILITY of DONOR...");
    			pDialog.setCancelable(false);
-   			pDialog.show();*/
+   			pDialog.show();
    		}
 
    		protected String doInBackground(Void... args)
@@ -205,10 +214,10 @@ public class Donating extends Activity implements OnFocusChangeListener
    		{
    			super.onPostExecute(result);
    			
-   			/*if(pDialog.isShowing())
+   			if(pDialog.isShowing())
    			{
    				pDialog.dismiss();
-   			}*/
+   			}
    			try
    			{
    				JSONObject data=new JSONObject(result);
@@ -217,11 +226,11 @@ public class Donating extends Activity implements OnFocusChangeListener
    				
    				if(code==-1)
    				{
-   					Toast.makeText(getApplicationContext(),"SORRY,this donor can not donoate blood before 3 months.",Toast.LENGTH_LONG).show();
+   					Toast.makeText(getApplicationContext(),"SORRY,this donor can not donate blood before 3 months.",Toast.LENGTH_LONG).show();
    				}
    				else if(code==0)
    				{
-   					Toast.makeText(getApplicationContext(),"SORRY,this donor hasn't registered yet.",Toast.LENGTH_LONG).show();
+   					Toast.makeText(getApplicationContext(),"SORRY,this donor can't donate blood.",Toast.LENGTH_LONG).show();
    				}
    				else
    				{
@@ -242,7 +251,7 @@ public class Donating extends Activity implements OnFocusChangeListener
    			try
    			{
    				HttpClient client=new DefaultHttpClient();
-   				HttpPost httpPost=new HttpPost("http://192.168.46.1/proj/existing_donor_check.php");
+   				HttpPost httpPost=new HttpPost("http://"+Server_Info.ip_add+"existing_donor_check.php");
    				httpPost.setEntity(new UrlEncodedFormEntity(pairs));
    				HttpResponse response=client.execute(httpPost);
    				HttpEntity entity=response.getEntity();
@@ -307,9 +316,12 @@ public class Donating extends Activity implements OnFocusChangeListener
 				
 				int code=data.getInt("code");
 				
+				Toast.makeText(getApplicationContext(),Integer.toString(code),Toast.LENGTH_LONG);
+				
 				if(code==1)
 				{
-				  new donating().execute();
+				  //new donating().execute();
+					new existing_donor_check().execute();
 				}
 				else
 				{
@@ -324,13 +336,13 @@ public class Donating extends Activity implements OnFocusChangeListener
 		public void INSERT_DATA()
 		{	
 			ArrayList<NameValuePair>pairs=new ArrayList<NameValuePair>();
-			
+			_id=donor_id.getText().toString();
 			pairs.add(new BasicNameValuePair("id",_id));
 			
 			try
 			{
 				HttpClient client=new DefaultHttpClient();
-				HttpPost httpPost=new HttpPost("http://192.168.46.1/proj/existing_donor_availablity.php");
+				HttpPost httpPost=new HttpPost("http://"+Server_Info.ip_add+"existing_donor_availablity.php");
 				httpPost.setEntity(new UrlEncodedFormEntity(pairs));
 				HttpResponse response=client.execute(httpPost);
 				HttpEntity entity=response.getEntity();
@@ -396,11 +408,11 @@ public class Donating extends Activity implements OnFocusChangeListener
 				
 				if(code==1)
 				{
-				Toast.makeText(getApplicationContext(),"DONATION COMPLETE :)",Toast.LENGTH_SHORT).show();	
+				Toast.makeText(getApplicationContext(),"Donation Completed!",Toast.LENGTH_SHORT).show();	
 				}
 				else
 				{
-					Toast.makeText(getApplicationContext(),"xx DONATION INCOMPLETE xx",Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),"DONATION INCOMPLETE",Toast.LENGTH_LONG).show();
 				}
 			}
 			catch(Exception e)
@@ -410,14 +422,12 @@ public class Donating extends Activity implements OnFocusChangeListener
 			
 			Intent i=new Intent(Donating.this,Admin_Rights.class);
 			startActivity(i);
+			finish();
 			
 		}
 		public void INSERT_DATA()
 		{	
 			ArrayList<NameValuePair>pairs=new ArrayList<NameValuePair>();
-			//String _id=donor_id.getText().toString();
-			//String _bags=no_of_bags.getText().toString();
-			//String _date=date.getText().toString();
 			
 			pairs.add(new BasicNameValuePair("id",_id));
 			pairs.add(new BasicNameValuePair("bags",_bags));
@@ -426,7 +436,7 @@ public class Donating extends Activity implements OnFocusChangeListener
 			try
 			{
 				HttpClient client=new DefaultHttpClient();
-				HttpPost httpPost=new HttpPost("http://192.168.46.1/proj/existing_donor_andro.php");
+				HttpPost httpPost=new HttpPost("http://"+Server_Info.ip_add+"existing_donor_andro.php");
 				httpPost.setEntity(new UrlEncodedFormEntity(pairs));
 				HttpResponse response=client.execute(httpPost);
 				HttpEntity entity=response.getEntity();
@@ -440,6 +450,6 @@ public class Donating extends Activity implements OnFocusChangeListener
 	}
 	public void onFocusChange(View v, boolean hasFocus)
 	{
-			
+		
 	}
 }

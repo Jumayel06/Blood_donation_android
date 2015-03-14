@@ -315,7 +315,7 @@ public class Add_Patient extends Activity
    			try
    			{
    				HttpClient client=new DefaultHttpClient();
-   				HttpPost httpPost=new HttpPost("http://192.168.46.1/proj/patient_check.php");
+   				HttpPost httpPost=new HttpPost("http://"+Server_Info.ip_add+"patient_check.php");
    				httpPost.setEntity(new UrlEncodedFormEntity(pairs));
    				HttpResponse response=client.execute(httpPost);
    				HttpEntity entity=response.getEntity();
@@ -396,6 +396,7 @@ class registering extends AsyncTask<Void,Void,String>
 			
 			Intent i=new Intent(Add_Patient.this,Admin_Rights.class);
 			startActivity(i);	
+			finish();
 		}
 		public void INSERT_DATA()
 		{	
@@ -417,7 +418,7 @@ class registering extends AsyncTask<Void,Void,String>
 			try
 			{
 				HttpClient client=new DefaultHttpClient();
-				HttpPost httpPost=new HttpPost("http://192.168.46.1/proj/patient_registration_andro.php");
+				HttpPost httpPost=new HttpPost("http://"+Server_Info.ip_add+"patient_registration_andro.php");
 				httpPost.setEntity(new UrlEncodedFormEntity(pairs));
 				HttpResponse response=client.execute(httpPost);
 				HttpEntity entity=response.getEntity();

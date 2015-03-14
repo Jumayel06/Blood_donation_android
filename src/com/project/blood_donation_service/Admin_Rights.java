@@ -59,6 +59,7 @@ public class Admin_Rights extends Activity
 			{
 				Intent i=new Intent(Admin_Rights.this,Inquiry.class);
 				startActivity(i);
+				
 			}
 		});
 		
@@ -77,8 +78,9 @@ public class Admin_Rights extends Activity
 				editor.clear();
 				editor.commit();
 				
-				Intent i=new Intent(Admin_Rights.this,Options.class);
+			    Intent i=new Intent(Admin_Rights.this,MainActivity.class);
 				startActivity(i);	
+				finish();
 			}
 		});
 	}
